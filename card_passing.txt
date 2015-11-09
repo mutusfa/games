@@ -1,0 +1,40 @@
+The aim of card_pass.py is to help determine card passing strategy after the cards have been dealt, assuming no (Grand) Tichu.
+
+First job is to determine which cards to send (including to your partner).
+
+Idea No1:
+  +  count which cards sent breaks the least combinations
+
+Points to consider:
+  +  long row is worth more than a pair
+  +  Ace is worth more than a pair of 2s
+  +  Drake, Dog are ignored
+  +  Mah Jongg will not be sent
+
+
+Idea No2:
+  +  send cards from other players randomly, learn which cards would've broken the least combinations
+
+Points to consider:
+  +  needs writing a learning AI
+
+
+Second job is to determine which card to send where.
+
+Idea No1:
+  +  you usually want to send highest of the three for the partner
+
+Idea No2:
+  +  you want enemy to have as little combinations as possible
+
+Points to consider:
+  +  Points from Idea No1 on determining cards sent
+
+Idea No3:
+  +  assume players can play better than I write code, and count combinations with the cards got without them sending any (each "enemy" has +3 cards as their partner got the card they didn't send)
+
+Idea No4:
+  +  define passing strategies in code
+  +  test each passing strategy for all picking strategies for all hands generated
+  +  count combinations
+  +  report
