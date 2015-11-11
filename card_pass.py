@@ -74,8 +74,8 @@ def find_combinations(hand):
     combs['triples'] = combs['same_kind'][3]
     combs['bombs'] = combs['same_kind'][4]
     combs['rows']=find_rows(hand)
-    combs['simple_rows'] = combs['rows']['simple']
-    combs['pheonix_rows'] = combs['rows']['pheonix']
+    for type_id in combs['rows'].keys():
+        combs['rows_%s' % type_id] = combs['rows'][type_id]
     del combs['rows']
     del combs['same_kind']
     return combs
@@ -135,7 +135,7 @@ def find_rows(hand, row_length=None):
 
     hand = hand.simple()
 
-    rows = {'simple':[], 'pheonix':[]}
+    rows = {'simple':[], 'pheonix':[], 'bomb':[]}
 
     row = Hand()
     hand_size = len(hand)
@@ -170,6 +170,13 @@ def find_rows(hand, row_length=None):
             for row_id, row in enumerate(single_type_rows):
                 if len(row) >= row_length:
                     rows[type_id].append(row)
+                    for card_id, card in enumerate(row[:-1]):
+                        if card.kind = pheonix:
+                            break
+                        if card.colour != row[card_id + 1].colour:
+                            break
+                    else:  #all cards in row are of the same colour
+                        rows['bomb'].append(row)
     return rows
 
 
