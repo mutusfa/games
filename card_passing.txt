@@ -18,6 +18,9 @@ Idea No2:
 Points to consider:
   +  needs writing a learning AI
 
+Idea No3:
+  +  download play logs and read hands and cards passed
+
 
 Second job is to determine which card to send where.
 
