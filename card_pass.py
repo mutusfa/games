@@ -60,9 +60,11 @@ def print_hands(hands):
 
 def print_combinations(combinations):
     for comb_type, combs in combinations.items():
-        print(comb_type)
-        for comb in combs:
-            print(tuple([str(card) for card in comb]))
+        if len(combs) > 0:
+            print(comb_type)
+            for comb in combs:
+                if len(comb) > 0:
+                    print([str(card) for card in comb])
 
 
 def find_combinations(hand):
@@ -110,6 +112,34 @@ def find_same_kind(hand):
             kind_count = 1
     same_kind_combs[kind_count].append(hand[-kind_count:])  #append last group
     return same_kind_combs
+
+
+def find_complex_combs(same_kind_combs):
+    """Finds combinations gained by mixing combinations of same kind.
+
+    Combinations of same kind must come in ascending order.
+
+    (readable representation)
+    {
+        1: [('2R',), ('4G',),],
+        2: [('3G', '3L'), ('5R', '5B'), ('6G', '6B'), ('7R','7B'),],
+        3: [('KR', 'KG', 'KB'),],
+        4: [],
+    }
+        ===>
+        {
+            'straight_pairs': {
+                2: [(('5R', '5B'), ('6G', '6B')), (('6G', '6B'), ('7R', '7B')),],
+                3: [(('5R', '5B'), ('6G', '6B'), ('7R', '7B')),],
+            },
+            'full_houses': [(('3G', '3L'), ('KR', 'KG', 'KB')),],
+        }
+
+    Finds:
+        Full-house
+        straight pairs
+    """
+    raise NotImplementedError()
 
 
 def find_rows(hand, row_length=None):
@@ -171,9 +201,10 @@ def find_rows(hand, row_length=None):
                 if len(row) >= row_length:
                     rows[type_id].append(row)
                     for card_id, card in enumerate(row[:-1]):
-                        if card.kind = pheonix:
-                            break
-                        if card.colour != row[card_id + 1].colour:
+                        try:
+                            if card.colour != row[card_id + 1].colour:
+                                break
+                        except AttributeError:
                             break
                     else:  #all cards in row are of the same colour
                         rows['bomb'].append(row)
