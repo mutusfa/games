@@ -1,8 +1,13 @@
 import json
 
+from django.core.exceptions import ValidationError
 from django.db import models
 
 DEF_MAX_LENGTH = 255
+
+
+
+
 
 class JSONField(models.TextField):
     """A class providing interface for saving JSON in database.
@@ -26,6 +31,18 @@ class JSONField(models.TextField):
         return json.dumps(value)
 
 
+class HandField(JSONField):
+    def from_db_value(self, value, expression, connections, context):
+        return parse_hand(
+            super().from_db_value(value, expression, connections, context)
+            )
+
+    def to_python(self, value):
+        return parse_hand(
+            super().to_python(value)
+            )
+
+
 class Game(models.Model): pass
 
 
@@ -39,10 +56,16 @@ class GameState(models.Model):
     state_type = models.ForeignKey(StateType)
     notes = models.TextField(blank=True)
 
+    class Meta():
+        abstract = True
+
 
 class CardGameState(GameState):
-    hands = JSONField()
+    hands = HandField()
     last_played = JSONField()
+
+    class Meta(GameState.Meta):
+        abstract = True
 
 
 class TichuGameState(CardGameState):
@@ -50,8 +73,5 @@ class TichuGameState(CardGameState):
     grand_tichu = JSONField()
 
 
-class AlternativeGameState(GameState):
-    original = models.ForeignKey(GameState)
-
-
-class AlternativeTichuGameState(AlternativeGameState, TichuGameState): pass
+class AlternativeTichuGameState(TichuGameState):
+    original = models.ForeignKey('self')
