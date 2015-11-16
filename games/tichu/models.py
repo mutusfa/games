@@ -3,10 +3,10 @@ import json
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from .card_pass import parse_hand
+
+
 DEF_MAX_LENGTH = 255
-
-
-
 
 
 class JSONField(models.TextField):
@@ -31,14 +31,14 @@ class JSONField(models.TextField):
         return json.dumps(value)
 
 
-class HandField(JSONField):
+class HandsField(JSONField):
     def from_db_value(self, value, expression, connections, context):
-        return parse_hand(
+        return parse_hands(
             super().from_db_value(value, expression, connections, context)
             )
 
     def to_python(self, value):
-        return parse_hand(
+        return parse_hands(
             super().to_python(value)
             )
 
@@ -61,7 +61,7 @@ class GameState(models.Model):
 
 
 class CardGameState(GameState):
-    hands = HandField()
+    hands = HandsField()
     last_played = JSONField()
 
     class Meta(GameState.Meta):

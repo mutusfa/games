@@ -20,7 +20,7 @@ class Hand(list):
         return "\n".join(as_list)
 
 
-def parse_hand(hand_string):
+def parse_hands(hands_):
     raise NotImplementedError()
 
 
