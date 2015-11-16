@@ -20,6 +20,10 @@ class Hand(list):
         return "\n".join(as_list)
 
 
+def parse_hand(hand_string):
+    raise NotImplementedError()
+
+
 def generate_hands(deck=None, no_players=None, grand_tichu=None):
     if deck is None:
         deck = constructed_constants.DECK.copy()
