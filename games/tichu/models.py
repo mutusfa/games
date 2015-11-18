@@ -3,7 +3,7 @@ import json
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from .card_pass import parse_hand
+from .card_pass import parse_hands
 
 
 DEF_MAX_LENGTH = 255
