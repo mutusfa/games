@@ -66,8 +66,6 @@ class TestSteinacherParser(TestCase):
             self.parser.game[self.card_string_key]
             )
         self.parser.translate_card_string()
-        for k, v in self.translated_valid_card_string.items():
-            print("%s: %s==%s" % (k, v, self.parser.game[self.card_string_key][k]))
         self.assertEqual(
             self.translated_valid_card_string,
             self.parser.game[self.card_string_key]
