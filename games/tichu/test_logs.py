@@ -31,7 +31,7 @@ class TestSteinacherParser(TestCase):
                 "tichu":[],
                 "tichu_gross":["2"],
                 "mitteilung":"LucyBotwin sagt GROSSES Tichu! "}],
-        "nsteps":52
+        "nsteps":1
         }
 
     int_keys_valid_card_string = {
@@ -58,15 +58,28 @@ class TestSteinacherParser(TestCase):
         55:"P", 56:"R",
         }
 
+    replaced_valid_hands = [
+        ["AP","0S","8P","8S","SE","4S","1", "D", "0P","0T","7S","6S","5T","4E"],
+        ["KP","KT","9E","7T","5S","4T","3E","3P","AE","QS","JT","8E","5P","3S"],
+        ["P", "AS","QT","JS","9P","9S","7P","3T","KE","QP","6P","4P","2E","2P"],
+        ["AT","KS","JE","JP","8T","6E","6T","2T","R", "QE","0E","9T","7E","2S"],
+        ]
+
     def test_valid_input(self):
         self.parser = logs.SteinacherParser(self.valid_game)
+        game = self.parser.game
         self.parser.pre_translate_card_string()
         self.assertEqual(
             self.int_keys_valid_card_string,
-            self.parser.game[self.card_string_key]
+            game[self.card_string_key]
             )
         self.parser.translate_card_string()
         self.assertEqual(
             self.translated_valid_card_string,
-            self.parser.game[self.card_string_key]
+            game[self.parser.card_string_key]
+            )
+        self.parser.replace_cards()
+        self.assertEqual(
+            self.replaced_valid_hands,
+            game[self.parser.states_key][self.parser.hands_key]
             )
