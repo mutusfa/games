@@ -59,7 +59,7 @@ class TestSteinacherParser(TestCase):
         }
 
     replaced_valid_hands = [
-        ["AP","0S","8P","8S","SE","4S","1", "D", "0P","0T","7S","6S","5T","4E"],
+        ["AP","0S","8P","8S","5E","4S","1", "D", "0P","0T","7S","6S","5T","4E"],
         ["KP","KT","9E","7T","5S","4T","3E","3P","AE","QS","JT","8E","5P","3S"],
         ["P", "AS","QT","JS","9P","9S","7P","3T","KE","QP","6P","4P","2E","2P"],
         ["AT","KS","JE","JP","8T","6E","6T","2T","R", "QE","0E","9T","7E","2S"],
@@ -81,5 +81,5 @@ class TestSteinacherParser(TestCase):
         self.parser.replace_cards()
         self.assertEqual(
             self.replaced_valid_hands,
-            game[self.parser.states_key][self.parser.hands_key]
+            game[self.parser.states_key][0][self.parser.hands_key]
             )

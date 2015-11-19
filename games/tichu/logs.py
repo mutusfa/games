@@ -64,18 +64,17 @@ class SteinacherParser(Parser):
     def replace_cards(self):
         """Replaces card ids from steinacher with their string."""
         for state_id, state in enumerate(self.game[self.states_key]):
-            for hands_id, hands in state[self.hands_key]:
-                for hand_id, hand in hands:
-                    temp = hand
+            for hand_id, hand in enumerate(state[self.hands_key]):
+                temp = hand
+                self.game[
+                    self.states_key][state_id][self.hands_key][hand_id] = []
+                for card_id in temp:
                     self.game[
-                        self.states_key][state_id][self.hands_key][hand_id] = []
-                    for card_id in temp:
-                        self.game[
-                            self.states_key][
-                            state_id][
-                            self.hands_key][
-                            hand_id
-                            ].append(self._card_string_card(card_id))
+                        self.states_key][
+                        state_id][
+                        self.hands_key][
+                        hand_id
+                        ].append(self._card_string_card(card_id))
 
     def translate_card_string(self):
         def translate(card_string):
