@@ -50,6 +50,12 @@ class SteinacherParser(Parser):
             value = self.game[self.card_string_key][card_id]
             return value
 
+    def parse(self, *args, **kwargs):
+        self.pre_translate_card_string()
+        self.translate_card_string()
+        self.replace_cards()
+        self.parse_hands(*args, **kwargs)
+
     def parse_hands(self, *args, **kwargs):
         for state_id, state in enumerate(self.game[self.states_key]):
             hands = super().parse(state[self.hands_key], *args, **kwargs)
