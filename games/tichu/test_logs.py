@@ -1,6 +1,10 @@
+import itertools
 from unittest import TestCase
 
-from . import logs
+from . import (
+    constructed_constants,
+    logs,
+    )
 
 class TestSteinacherParser(TestCase):
     card_string_key = 'card_string'
@@ -66,6 +70,7 @@ class TestSteinacherParser(TestCase):
         ]
 
     def test_valid_input(self):
+        """A 'seems to be working' test."""
         self.parser = logs.SteinacherParser(self.valid_game)
         game = self.parser.game
         self.parser.pre_translate_card_string()
@@ -83,3 +88,14 @@ class TestSteinacherParser(TestCase):
             self.replaced_valid_hands,
             game[self.parser.states_key][0][self.parser.hands_key]
             )
+        self.parser.parse_hands()
+        for state_id, state in enumerate(game[self.parser.states_key]):
+            comp_hands = itertools.chain.from_iterable(
+                state[self.parser.hands_key]
+                )
+            self.assertListEqual(
+                sorted(constructed_constants.DECK),
+                sorted(comp_hands),
+                msg="Hands from %s stage do not combine into a full deck." % (
+                    state_id)
+                )

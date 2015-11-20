@@ -2,20 +2,20 @@
 
 import json
 
+from . import constructed_constants
+
 
 class Parser():
     def __init__(self, deck=None, *args, **kwargs):
-        self.deck = deck
+        self.deck = sorted(deck)
+        self._str_deck = [str(card) for card in self.deck]
         super().__init__(*args, **kwargs)
 
     def parse(self, hands, *args, **kwargs):
-        def deck_gen():
-            for card in self.deck:
-                yield card
-
-        for hand_id, hand in enumerate(hands):
+        for hand_id, hand in enumerate(hands[:]):
             for card_id, card in enumerate(hand):
-               raise NotImplementedError()
+               hands[hand_id][card_id] = self.deck[self._str_deck.index(card)]
+        return hands
 
 
 class SteinacherParser(Parser):
@@ -36,7 +36,7 @@ class SteinacherParser(Parser):
         self.card_string_key = card_string_key
         self.states_key = 'views'
         self.hands_key = 'hand'
-        super().__init__(*args, **kwargs)
+        super().__init__(deck=constructed_constants.DECK, *args, **kwargs)
 
     def _card_string_card(self, card_id=None, value=None):
             """A DRY way to get or set value of a card card_string."""
@@ -50,10 +50,10 @@ class SteinacherParser(Parser):
             value = self.game[self.card_string_key][card_id]
             return value
 
-    def parse(self, *args, **kwargs):
-        self.pre_translate_card_string()
-        self.translate_card_string()
-        super().parse(*args, **kwargs)
+    def parse_hands(self, *args, **kwargs):
+        for state_id, state in enumerate(self.game[self.states_key]):
+            hands = super().parse(state[self.hands_key], *args, **kwargs)
+            self.game[self.states_key][state_id][self.hands_key] = hands
 
     def pre_translate_card_string(self):
         temp = self.game[self.card_string_key]
